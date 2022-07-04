@@ -39,7 +39,38 @@ void setup() {
     Serial.println(F("Fallo en la asignacion de SSD1306"));
     }
 
+    changeDisplay(0,0,0,0);
     
+    delay(3000);
+}
+
+void loop() {
+    delay(3000);
+    
+    int sensorVal_1 = analogRead(A0);
+    int sensorVal_2 = analogRead(A1);
+    int sensorVal_3 = analogRead(A2);
+    int sensorVal_4 = analogRead(A3);
+
+    int percent_1 = map(sensorVal_1, wet, dry, 100, 0);
+    int percent_2 = map(sensorVal_2, wet, dry, 100, 0);
+    int percent_3 = map(sensorVal_3, wet, dry, 100, 0);
+    int percent_4 = map(sensorVal_4, wet, dry, 100, 0);
+
+    if (sensorVal_1 > maxValue_1) maxValue_1 = sensorVal_1;
+    if (sensorVal_2 > maxValue_2) maxValue_2 = sensorVal_2;
+    if (sensorVal_3 > maxValue_3) maxValue_3 = sensorVal_3;
+    if (sensorVal_4 > maxValue_4) maxValue_4 = sensorVal_4;
+
+    if (sensorVal_1 < minValue_1) minValue_1 = sensorVal_1;
+    if (sensorVal_2 < minValue_2) minValue_2 = sensorVal_2;
+    if (sensorVal_3 < minValue_3) minValue_3 = sensorVal_3;
+    if (sensorVal_4 < minValue_4) minValue_4 = sensorVal_4;
+
+    changeDisplay(percent_1, percent_2, percent_3, percent_4);
+}
+
+void changeDisplay(int a, int b, int c, int d) {
     display.clearDisplay(); 
     display.setTextSize(1);
     display.setTextColor(WHITE);
@@ -52,49 +83,16 @@ void setup() {
     display.display();
 
     display.setTextSize(2);
-    display.setCursor(00,20);
-    display.println("Humedad: ");
+    display.setCursor(00,30);
+    display.println(a);
     display.display();
-    delay(3000);
-}
-
-void loop() {
-    delay(1000);
-    
-    int sensorVal_1 = analogRead(A0);
-    int sensorVal_2 = analogRead(A1);
-    int sensorVal_3 = analogRead(A2);
-    int sensorVal_4 = analogRead(A3);
-
-    Serial.println("");
-    Serial.println("ACTUAL VALUES");
-    Serial.println(sensorVal_1);
-    Serial.println(sensorVal_2);
-    Serial.println(sensorVal_3);
-    Serial.println(sensorVal_4);
-
-    if (sensorVal_1 > maxValue_1) maxValue_1 = sensorVal_1;
-    if (sensorVal_2 > maxValue_2) maxValue_2 = sensorVal_2;
-    if (sensorVal_3 > maxValue_3) maxValue_3 = sensorVal_3;
-    if (sensorVal_4 > maxValue_4) maxValue_4 = sensorVal_4;
-
-    Serial.println("");
-    Serial.println("MAX VALUES");
-    Serial.println(maxValue_1);
-    Serial.println(maxValue_2);
-    Serial.println(maxValue_3);
-    Serial.println(maxValue_4);
-
-    if (sensorVal_1 < minValue_1) minValue_1 = sensorVal_1;
-    if (sensorVal_2 < minValue_2) minValue_2 = sensorVal_2;
-    if (sensorVal_3 < minValue_3) minValue_3 = sensorVal_3;
-    if (sensorVal_4 < minValue_4) minValue_4 = sensorVal_4;
-
-    Serial.println("");
-    Serial.println("MIN VALUES:");
-    Serial.println(minValue_1);
-    Serial.println(minValue_2);
-    Serial.println(minValue_3);
-    Serial.println(minValue_4);
-
+    display.setCursor(34,30);
+    display.println(b);
+    display.display();
+    display.setCursor(68,30);
+    display.println(c);
+    display.display();
+    display.setCursor(102,30);
+    display.println(d);
+    display.display();
 }
